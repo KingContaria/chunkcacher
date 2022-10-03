@@ -1,34 +1,26 @@
 package me.char321.chunkcacher;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ChunkSerializer;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.level.LevelInfo;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class WorldCache {
     public static boolean isGenerating = false;
     public static LevelInfo lastGeneratorOptions = null;
-    public static Map<DimensionType, Long2ObjectLinkedOpenHashMap<CompoundTag>> cache = new HashMap<>();
+    public static final Long2ObjectLinkedOpenHashMap<CompletableFuture<?>> cache = new Long2ObjectLinkedOpenHashMap<>();
 
-    public static void addChunk(ChunkPos chunkPos, Chunk chunk, ServerWorld world) {
-        cache.computeIfAbsent(world.getDimension().getType(), k -> new Long2ObjectLinkedOpenHashMap<>()).put(chunkPos.toLong(), ChunkSerializer.serialize(world, chunk));
+    public static void addChunk(ChunkPos chunkPos, CompletableFuture<?> completableFuture) {
+        cache.put(chunkPos.method_16281(), completableFuture);
     }
 
     public static boolean shouldCache() {
         return isGenerating;
     }
 
-    public static CompoundTag getChunkNbt(ChunkPos chunkPos, ServerWorld world) {
-        Long2ObjectLinkedOpenHashMap<CompoundTag> map = cache.get(world.getDimension().getType());
-        if (map == null) return null;
-        return map.get(chunkPos.toLong());
+    public static CompletableFuture<?> getChunk(ChunkPos chunkPos) {
+        return cache.get(chunkPos.method_16281());
     }
 
     /**

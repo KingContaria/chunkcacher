@@ -7,14 +7,12 @@
   "authors": [],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/chunkcacher/icon.png",
   "environment": "*",
   "entrypoints": {},
   "mixins": [
     "chunkcacher.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.2",
-    "minecraft": ">=1.14 <=1.15.2"
+    "fabricloader": ">=0.12.2"
   }
 }
