@@ -1,6 +1,7 @@
 package me.char321.chunkcacher;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
+import me.voidxwalker.autoreset.Atum;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.level.LevelInfo;
 
@@ -16,7 +17,7 @@ public class WorldCache {
     }
 
     public static boolean shouldCache() {
-        return isGenerating;
+        return isGenerating && Atum.isRunning;
     }
 
     public static CompletableFuture<?> getChunk(ChunkPos chunkPos) {
@@ -37,5 +38,9 @@ public class WorldCache {
             cache.clear();
             lastGeneratorOptions = generatorOptions;
         }
+    }
+
+    public static void clearCache() {
+        cache.clear();
     }
 }

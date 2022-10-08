@@ -37,5 +37,4 @@ public class class_3453Mixin {
             WorldCache.addChunk((ChunkPos) this.field_16646, cir.getReturnValue());
         }
     }
-
 }
